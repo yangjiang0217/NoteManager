@@ -46,13 +46,26 @@ int CVerifyManager::VerifyUser(const char *pUserName, const char *pPassword)
 // 修改密码
 int CVerifyManager::ModifyPassword(const char *pUserName, const char *pOldPassword, const char *pPassword)
 {
-    int nRet = VerifyUser(pUserName, pOldPassword);
+    // 验证用户
+    CRYPTO_EncryptString(pUserName, m_pDefaultKey, m_szUser, sizeof(m_szUser));
+    CRYPTO_EncryptString(pOldPassword, m_pDefaultKey, m_szPassword, sizeof(m_szPassword));
+    int nRet = DBM_Connect();
     if (nRet != 0)
     {
         return -1;
     }
+    DBM_QueryUser(QueryUserResult, this);
+    // 验证失败
+    if (m_nVerify != 0)
+    {
+        DBM_Disconnect();
+        return -1;
+    }
+    // 修改密码
     CRYPTO_EncryptString(pPassword, m_pDefaultKey, m_szPassword, sizeof(m_szPassword));
-    return DBM_ModifyUserPassword(m_szUser, m_szPassword);
+    nRet = DBM_ModifyUserPassword(m_szUser, m_szPassword);
+    DBM_Disconnect();
+    return nRet;
 }
 // 查询用户结果回调函数
 int CVerifyManager::QueryUserResult(int nUserID, const char *pUserName, const char *pPassword, void *pUser)

@@ -558,8 +558,9 @@ int CDatabaseManager::UpdateUser(const char *pUserName, const char *pPassword)
         // ×éºÏsqlÓï¾ä
         std::string strSql = "UPDATE sys_user SET user_password ='";
         strSql += pPassword;
-        strSql += "' WHERE user_name=";
+        strSql += "' WHERE user_name = '";
         strSql += pUserName;
+        strSql += "'";
         char *pErrMsg = NULL;
         // Ö´ÐÐsqlÓï¾ä
         std::lock_guard<std::mutex> guardDBMgr(m_mutexDBMgr);
