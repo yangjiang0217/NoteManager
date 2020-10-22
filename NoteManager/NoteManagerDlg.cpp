@@ -401,7 +401,7 @@ void CNoteManagerDlg::OnBnClickedButtonAdd()
     CString strPlatform = dlgAdd.GetPlatform();
     CString strAccount = dlgAdd.GetAccount();
     CString strPassword = dlgAdd.GetPassword();
-    char szAccount[64] = { 0 };
+    char szAccount[128] = { 0 };
     char szPassword[128] = { 0 };
     CRYPTO_EncryptString(strAccount.GetBuffer(), m_strKey.GetBuffer(), szAccount, sizeof(szAccount));
     CRYPTO_EncryptString(strPassword.GetBuffer(), m_strKey.GetBuffer(), szPassword, sizeof(szPassword));

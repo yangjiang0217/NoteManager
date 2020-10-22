@@ -2,7 +2,7 @@
 #include "pch.h"
 #include "framework.h"
 #include "CryptoApi.h"
-#include "NavicatCrypto.hpp"
+#include "Crypto.h"
 
 // 加密
 CRYPTOAPI_API int CRYPTO_EncryptString(const char *pText, const char *pKey, char *pOut, unsigned int nOutLen)
@@ -13,7 +13,7 @@ CRYPTOAPI_API int CRYPTO_EncryptString(const char *pText, const char *pKey, char
         {
             return -1;
         }
-        Navicat12Crypto nc(pKey, strlen(pKey));
+        CryptoV2 nc(pKey, strlen(pKey));
         std::string strText = pText;
         std::string strEnc = nc.EncryptString(strText);
         snprintf(pOut, nOutLen - 1, strEnc.c_str());
@@ -29,7 +29,7 @@ CRYPTOAPI_API int CRYPTO_DecryptString(const char *pText, const char *pKey, char
 {
     try
     {
-        Navicat12Crypto nc(pKey, strlen(pKey));
+        CryptoV2 nc(pKey, strlen(pKey));
         std::string strText = pText;
         std::string strDec = nc.DecryptString(strText);
         snprintf(pOut, nOutLen - 1, strDec.c_str());

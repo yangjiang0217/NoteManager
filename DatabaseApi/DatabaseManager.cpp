@@ -7,13 +7,13 @@
 "CREATE TABLE IF NOT EXISTS user_note(\
 id INTEGER NOT NULL PRIMARY KEY,\
 platform VARCHAR(64) NOT NULL,\
-user_account VARCHAR(64) NOT NULL,\
+user_account VARCHAR(128) NOT NULL,\
 user_password VARCHAR(128) NOT NULL)"
 // 创建用户表
 #define DEF_SQL_CREATE_TABLE_SYS_USER \
 "CREATE TABLE IF NOT EXISTS sys_user(\
 id INTEGER NOT NULL PRIMARY KEY,\
-user_name VARCHAR(64) NOT NULL UNIQUE,\
+user_name VARCHAR(128) NOT NULL UNIQUE,\
 user_password VARCHAR(128) NOT NULL)"
 
 /**
@@ -152,7 +152,7 @@ int CDatabaseManager::ConnectDB()
             return 0;
         }
         // 用户表没有用户，插入默认用户
-        strSql = "INSERT INTO sys_user values(NULL,'5D4B19AA47','86EADD1E5C36AF59DB0F')";
+        strSql = "INSERT INTO sys_user values(NULL,'945854C08373ECE650C7FBB48C2F7552','39366C63D5FA3FA5705C24ACD970FBAF')";
         nRet = sqlite3_exec(m_pDB, strSql.c_str(), 0, 0, &pErrMsg);
         if (nRet != SQLITE_OK)
         {
