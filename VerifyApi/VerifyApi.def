@@ -1,0 +1,4 @@
+LIBRARY
+EXPORTS
+    Verify_User
+    Verify_ModifyPassword

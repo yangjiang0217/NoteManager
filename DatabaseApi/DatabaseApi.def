@@ -1,0 +1,16 @@
+LIBRARY
+EXPORTS
+    DBM_Connect
+    DBM_Disconnect
+    DBM_AddNote
+    DBM_DeleteNote
+    DBM_UpdateNote
+    DBM_UpdatePlatform
+    DBM_UpdateAccount
+    DBM_UpdatePassword
+    DBM_QueryNote
+    DBM_AddUser
+    DBM_DeleteUser
+    DBM_UpdateUser
+    DBM_ModifyUserPassword
+    DBM_QueryUser

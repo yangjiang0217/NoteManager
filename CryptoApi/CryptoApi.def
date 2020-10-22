@@ -1,0 +1,4 @@
+LIBRARY
+EXPORTS
+    CRYPTO_EncryptString
+    CRYPTO_DecryptString

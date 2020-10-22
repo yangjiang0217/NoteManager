@@ -1,0 +1,52 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.1259
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DatabaseApi", "DatabaseApi\DatabaseApi.vcxproj", "{7A8EB51F-44B5-41E8-A49D-9F1DC2DFD945}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CryptoApi", "CryptoApi\CryptoApi.vcxproj", "{1B2B8061-3917-419C-892E-986F54D7CCA3}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "VerifyApi", "VerifyApi\VerifyApi.vcxproj", "{EC92B217-DA87-4A99-8106-A55A80AEDAFC}"
+	ProjectSection(ProjectDependencies) = postProject
+		{7A8EB51F-44B5-41E8-A49D-9F1DC2DFD945} = {7A8EB51F-44B5-41E8-A49D-9F1DC2DFD945}
+		{1B2B8061-3917-419C-892E-986F54D7CCA3} = {1B2B8061-3917-419C-892E-986F54D7CCA3}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NoteManager", "NoteManager\NoteManager.vcxproj", "{0276D514-4F05-455B-AC74-B887FAC04DD0}"
+	ProjectSection(ProjectDependencies) = postProject
+		{EC92B217-DA87-4A99-8106-A55A80AEDAFC} = {EC92B217-DA87-4A99-8106-A55A80AEDAFC}
+		{7A8EB51F-44B5-41E8-A49D-9F1DC2DFD945} = {7A8EB51F-44B5-41E8-A49D-9F1DC2DFD945}
+		{1B2B8061-3917-419C-892E-986F54D7CCA3} = {1B2B8061-3917-419C-892E-986F54D7CCA3}
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7A8EB51F-44B5-41E8-A49D-9F1DC2DFD945}.Debug|x86.ActiveCfg = Debug|Win32
+		{7A8EB51F-44B5-41E8-A49D-9F1DC2DFD945}.Debug|x86.Build.0 = Debug|Win32
+		{7A8EB51F-44B5-41E8-A49D-9F1DC2DFD945}.Release|x86.ActiveCfg = Release|Win32
+		{7A8EB51F-44B5-41E8-A49D-9F1DC2DFD945}.Release|x86.Build.0 = Release|Win32
+		{1B2B8061-3917-419C-892E-986F54D7CCA3}.Debug|x86.ActiveCfg = Debug|Win32
+		{1B2B8061-3917-419C-892E-986F54D7CCA3}.Debug|x86.Build.0 = Debug|Win32
+		{1B2B8061-3917-419C-892E-986F54D7CCA3}.Release|x86.ActiveCfg = Release|Win32
+		{1B2B8061-3917-419C-892E-986F54D7CCA3}.Release|x86.Build.0 = Release|Win32
+		{EC92B217-DA87-4A99-8106-A55A80AEDAFC}.Debug|x86.ActiveCfg = Debug|Win32
+		{EC92B217-DA87-4A99-8106-A55A80AEDAFC}.Debug|x86.Build.0 = Debug|Win32
+		{EC92B217-DA87-4A99-8106-A55A80AEDAFC}.Release|x86.ActiveCfg = Release|Win32
+		{EC92B217-DA87-4A99-8106-A55A80AEDAFC}.Release|x86.Build.0 = Release|Win32
+		{0276D514-4F05-455B-AC74-B887FAC04DD0}.Debug|x86.ActiveCfg = Debug|Win32
+		{0276D514-4F05-455B-AC74-B887FAC04DD0}.Debug|x86.Build.0 = Debug|Win32
+		{0276D514-4F05-455B-AC74-B887FAC04DD0}.Release|x86.ActiveCfg = Release|Win32
+		{0276D514-4F05-455B-AC74-B887FAC04DD0}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1AEDC232-F111-4B9F-A268-F3C945F41F07}
+	EndGlobalSection
+EndGlobal
