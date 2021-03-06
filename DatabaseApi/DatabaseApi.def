@@ -9,8 +9,5 @@ EXPORTS
     DBM_UpdateAccount
     DBM_UpdatePassword
     DBM_QueryNote
-    DBM_AddUser
-    DBM_DeleteUser
-    DBM_UpdateUser
-    DBM_ModifyUserPassword
-    DBM_QueryUser
+    DBM_UpdateKey
+    DBM_QueryKey

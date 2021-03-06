@@ -35,16 +35,16 @@ void accel_AES128_encrypt(uint8_t srcBytes[AES_BLOCK_SIZE], const ACCEL_AES_KEY*
 
         //Shift rows starts;
         //Shift the second row;
-        Swap(srcBytes[1], srcBytes[5], ShiftTemp)
-        Swap(srcBytes[5], srcBytes[9], ShiftTemp)
-        Swap(srcBytes[9], srcBytes[13], ShiftTemp)
+        Swap(srcBytes[1], srcBytes[5], ShiftTemp);
+        Swap(srcBytes[5], srcBytes[9], ShiftTemp);
+        Swap(srcBytes[9], srcBytes[13], ShiftTemp);
         //Shift the third row;
-        Swap(srcBytes[2], srcBytes[10], ShiftTemp)
-        Swap(srcBytes[6], srcBytes[14], ShiftTemp)
+        Swap(srcBytes[2], srcBytes[10], ShiftTemp);
+        Swap(srcBytes[6], srcBytes[14], ShiftTemp);
         //Shift the fourth row;
-        Swap(srcBytes[3], srcBytes[15], ShiftTemp)
-        Swap(srcBytes[15], srcBytes[11], ShiftTemp)
-        Swap(srcBytes[11], srcBytes[7], ShiftTemp)
+        Swap(srcBytes[3], srcBytes[15], ShiftTemp);
+        Swap(srcBytes[15], srcBytes[11], ShiftTemp);
+        Swap(srcBytes[11], srcBytes[7], ShiftTemp);
         //Shift rows ends;
 
 
@@ -67,16 +67,16 @@ void accel_AES128_encrypt(uint8_t srcBytes[AES_BLOCK_SIZE], const ACCEL_AES_KEY*
 
     //Shift rows starts;
     //Shift the second row;
-    Swap(srcBytes[1], srcBytes[5], ShiftTemp)
-    Swap(srcBytes[5], srcBytes[9], ShiftTemp)
-    Swap(srcBytes[9], srcBytes[13], ShiftTemp)
+    Swap(srcBytes[1], srcBytes[5], ShiftTemp);
+    Swap(srcBytes[5], srcBytes[9], ShiftTemp);
+    Swap(srcBytes[9], srcBytes[13], ShiftTemp);
     //Shift the third row;
-    Swap(srcBytes[2], srcBytes[10], ShiftTemp)
-    Swap(srcBytes[6], srcBytes[14], ShiftTemp)
+    Swap(srcBytes[2], srcBytes[10], ShiftTemp);
+    Swap(srcBytes[6], srcBytes[14], ShiftTemp);
     //Shift the fourth row;
-    Swap(srcBytes[3], srcBytes[15], ShiftTemp)
-    Swap(srcBytes[15], srcBytes[11], ShiftTemp)
-    Swap(srcBytes[11], srcBytes[7], ShiftTemp)
+    Swap(srcBytes[3], srcBytes[15], ShiftTemp);
+    Swap(srcBytes[15], srcBytes[11], ShiftTemp);
+    Swap(srcBytes[11], srcBytes[7], ShiftTemp);
     //Shift rows ends;
 
     ((uint64_t*)srcBytes)[0] ^= srcKey->qword[20];
@@ -92,16 +92,16 @@ void accel_AES128_decrypt(uint8_t srcBytes[AES_BLOCK_SIZE], const ACCEL_AES_KEY*
     for (int i = 9; i > 0; --i) {
         //Inverse Shift rows starts;
         //Inverse shift the second row;
-        Swap(srcBytes[13], srcBytes[9], ShiftTemp)
-        Swap(srcBytes[9], srcBytes[5], ShiftTemp)
-        Swap(srcBytes[5], srcBytes[1], ShiftTemp)
+        Swap(srcBytes[13], srcBytes[9], ShiftTemp);
+        Swap(srcBytes[9], srcBytes[5], ShiftTemp);
+        Swap(srcBytes[5], srcBytes[1], ShiftTemp);
         //Inverse shift the third row;
-        Swap(srcBytes[14], srcBytes[6], ShiftTemp)
-        Swap(srcBytes[10], srcBytes[2], ShiftTemp)
+        Swap(srcBytes[14], srcBytes[6], ShiftTemp);
+        Swap(srcBytes[10], srcBytes[2], ShiftTemp);
         //Inverse shift the fourth row;
-        Swap(srcBytes[3], srcBytes[7], ShiftTemp)
-        Swap(srcBytes[7], srcBytes[11], ShiftTemp)
-        Swap(srcBytes[11], srcBytes[15], ShiftTemp)
+        Swap(srcBytes[3], srcBytes[7], ShiftTemp);
+        Swap(srcBytes[7], srcBytes[11], ShiftTemp);
+        Swap(srcBytes[11], srcBytes[15], ShiftTemp);
 
         for (int j = 0; j < 16; ++j)
             srcBytes[j] = accel_AES_InverseSBox[srcBytes[j]];
@@ -112,40 +112,44 @@ void accel_AES128_decrypt(uint8_t srcBytes[AES_BLOCK_SIZE], const ACCEL_AES_KEY*
         for (int j = 0; j < 16; j += 4) {
             uint8_t temp[4];
             *(uint32_t*)temp = ((uint32_t*)srcBytes)[j / 4];
-            srcBytes[j + 0] = (uint8_t)(accel_AES_GF2p8_Mul_0x0E[temp[0]] ^
-                                        accel_AES_GF2p8_Mul_0x0B[temp[1]] ^
-                                        accel_AES_GF2p8_Mul_0x0D[temp[2]] ^
-                                        accel_AES_GF2p8_Mul_0x09[temp[3]]);
+            srcBytes[j + 0] = (uint8_t)(
+                accel_AES_GF2p8_Mul_0x0E[temp[0]] ^
+                accel_AES_GF2p8_Mul_0x0B[temp[1]] ^
+                accel_AES_GF2p8_Mul_0x0D[temp[2]] ^
+                accel_AES_GF2p8_Mul_0x09[temp[3]]);
 
-            srcBytes[j + 1] = (uint8_t)(accel_AES_GF2p8_Mul_0x09[temp[0]] ^ 
-                                        accel_AES_GF2p8_Mul_0x0E[temp[1]] ^ 
-                                        accel_AES_GF2p8_Mul_0x0B[temp[2]] ^ 
-                                        accel_AES_GF2p8_Mul_0x0D[temp[3]]);
+            srcBytes[j + 1] = (uint8_t)(
+                accel_AES_GF2p8_Mul_0x09[temp[0]] ^
+                accel_AES_GF2p8_Mul_0x0E[temp[1]] ^
+                accel_AES_GF2p8_Mul_0x0B[temp[2]] ^
+                accel_AES_GF2p8_Mul_0x0D[temp[3]]);
 
-            srcBytes[j + 2] = (uint8_t)(accel_AES_GF2p8_Mul_0x0D[temp[0]] ^ 
-                                        accel_AES_GF2p8_Mul_0x09[temp[1]] ^ 
-                                        accel_AES_GF2p8_Mul_0x0E[temp[2]] ^ 
-                                        accel_AES_GF2p8_Mul_0x0B[temp[3]]);
+            srcBytes[j + 2] = (uint8_t)(
+                accel_AES_GF2p8_Mul_0x0D[temp[0]] ^
+                accel_AES_GF2p8_Mul_0x09[temp[1]] ^
+                accel_AES_GF2p8_Mul_0x0E[temp[2]] ^
+                accel_AES_GF2p8_Mul_0x0B[temp[3]]);
 
-            srcBytes[j + 3] = (uint8_t)(accel_AES_GF2p8_Mul_0x0B[temp[0]] ^ 
-                                        accel_AES_GF2p8_Mul_0x0D[temp[1]] ^ 
-                                        accel_AES_GF2p8_Mul_0x09[temp[2]] ^ 
-                                        accel_AES_GF2p8_Mul_0x0E[temp[3]]);
+            srcBytes[j + 3] = (uint8_t)(
+                accel_AES_GF2p8_Mul_0x0B[temp[0]] ^
+                accel_AES_GF2p8_Mul_0x0D[temp[1]] ^
+                accel_AES_GF2p8_Mul_0x09[temp[2]] ^
+                accel_AES_GF2p8_Mul_0x0E[temp[3]]);
         }
     }
 
     //Inverse Shift rows starts;
     //Inverse shift the second row;
-    Swap(srcBytes[13], srcBytes[9], ShiftTemp)
-    Swap(srcBytes[9], srcBytes[5], ShiftTemp)
-    Swap(srcBytes[5], srcBytes[1], ShiftTemp)
+    Swap(srcBytes[13], srcBytes[9], ShiftTemp);
+    Swap(srcBytes[9], srcBytes[5], ShiftTemp);
+    Swap(srcBytes[5], srcBytes[1], ShiftTemp);
     //Inverse shift the third row;
-    Swap(srcBytes[14], srcBytes[6], ShiftTemp)
-    Swap(srcBytes[10], srcBytes[2], ShiftTemp)
+    Swap(srcBytes[14], srcBytes[6], ShiftTemp);
+    Swap(srcBytes[10], srcBytes[2], ShiftTemp);
     //Inverse shift the fourth row;
-    Swap(srcBytes[3], srcBytes[7], ShiftTemp)
-    Swap(srcBytes[7], srcBytes[11], ShiftTemp)
-    Swap(srcBytes[11], srcBytes[15], ShiftTemp)
+    Swap(srcBytes[3], srcBytes[7], ShiftTemp);
+    Swap(srcBytes[7], srcBytes[11], ShiftTemp);
+    Swap(srcBytes[11], srcBytes[15], ShiftTemp);
 
     for (int j = 0; j < 16; ++j)
         srcBytes[j] = accel_AES_InverseSBox[srcBytes[j]];

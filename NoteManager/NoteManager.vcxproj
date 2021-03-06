@@ -30,7 +30,7 @@
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
-    <CharacterSet>NotSet</CharacterSet>
+    <CharacterSet>Unicode</CharacterSet>
     <UseOfMfc>Dynamic</UseOfMfc>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
@@ -38,7 +38,7 @@
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>NotSet</CharacterSet>
+    <CharacterSet>Unicode</CharacterSet>
     <UseOfMfc>Dynamic</UseOfMfc>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
@@ -193,9 +193,8 @@
     <ClInclude Include="CustomEdit.h" />
     <ClInclude Include="CustomListCtrl.h" />
     <ClInclude Include="framework.h" />
-    <ClInclude Include="KeyDlg.h" />
-    <ClInclude Include="LoginDlg.h" />
-    <ClInclude Include="ModifyPasswordDlg.h" />
+    <ClInclude Include="VerifyDlg.h" />
+    <ClInclude Include="UpdateKeyDlg.h" />
     <ClInclude Include="NoteManager.h" />
     <ClInclude Include="NoteManagerDlg.h" />
     <ClInclude Include="pch.h" />
@@ -206,9 +205,8 @@
     <ClCompile Include="AddDlg.cpp" />
     <ClCompile Include="CustomEdit.cpp" />
     <ClCompile Include="CustomListCtrl.cpp" />
-    <ClCompile Include="KeyDlg.cpp" />
-    <ClCompile Include="LoginDlg.cpp" />
-    <ClCompile Include="ModifyPasswordDlg.cpp" />
+    <ClCompile Include="VerifyDlg.cpp" />
+    <ClCompile Include="UpdateKeyDlg.cpp" />
     <ClCompile Include="NoteManager.cpp" />
     <ClCompile Include="NoteManagerDlg.cpp" />
     <ClCompile Include="pch.cpp">

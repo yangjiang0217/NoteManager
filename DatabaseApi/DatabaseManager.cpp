@@ -3,19 +3,11 @@
 #include "DatabaseManager.h"
 
 // 创建用户便签表
-#define DEF_SQL_CREATE_TABLE_USER_NOTE \
-"CREATE TABLE IF NOT EXISTS user_note(\
-id INTEGER NOT NULL PRIMARY KEY,\
-platform VARCHAR(64) NOT NULL,\
-user_account VARCHAR(128) NOT NULL,\
-user_password VARCHAR(128) NOT NULL)"
-// 创建用户表
-#define DEF_SQL_CREATE_TABLE_SYS_USER \
-"CREATE TABLE IF NOT EXISTS sys_user(\
-id INTEGER NOT NULL PRIMARY KEY,\
-user_name VARCHAR(128) NOT NULL UNIQUE,\
-user_password VARCHAR(128) NOT NULL)"
-
+constexpr auto SQL_CREATE_TABLE_USER_NOTE = "CREATE TABLE IF NOT EXISTS user_note(id INTEGER NOT NULL PRIMARY KEY,platform VARCHAR(64) NOT NULL,user_account VARCHAR(128) NOT NULL,user_password VARCHAR(128) NOT NULL)";
+// 创建密钥表
+constexpr auto SQL_CREATE_TABLE_SYS_KEY = "CREATE TABLE IF NOT EXISTS sys_key(id INTEGER NOT NULL PRIMARY KEY,user_key VARCHAR(128) NOT NULL)";
+// 创建默认密钥
+constexpr auto SQL_CREATE_DEFAULT_SYS_KEY = "INSERT INTO sys_key values(NULL,'DEC2B1AA5B7F1D33D7CE4E3A30D15BF7FFB3D65540ED719ABF52F76493E09BB4')";
 /**
 *   获取程序库路径
 *   @param[in]  pModuleName     模块名称
@@ -113,7 +105,7 @@ int CDatabaseManager::ConnectDB()
         // 创建不存的数据表，若存在则不创建
         // 创建便签表
         char *pErrMsg = NULL;
-        nRet = sqlite3_exec(m_pDB, DEF_SQL_CREATE_TABLE_USER_NOTE, 0, 0, &pErrMsg);
+        nRet = sqlite3_exec(m_pDB, SQL_CREATE_TABLE_USER_NOTE, 0, 0, &pErrMsg);
         if (nRet != SQLITE_OK)
         {
             printf("%s create table user_note error. ret:%d err:%s", __FUNCTION__, nRet, pErrMsg);
@@ -121,17 +113,17 @@ int CDatabaseManager::ConnectDB()
             sqlite3_close(m_pDB);
             return -1;
         }
-        // 创建用户表
-        nRet = sqlite3_exec(m_pDB, DEF_SQL_CREATE_TABLE_SYS_USER, 0, 0, &pErrMsg);
+        // 创建密钥表
+        nRet = sqlite3_exec(m_pDB, SQL_CREATE_TABLE_SYS_KEY, 0, 0, &pErrMsg);
         if (nRet != SQLITE_OK)
         {
-            printf("%s create table sys_user error. ret:%d err:%s", __FUNCTION__, nRet, pErrMsg);
+            printf("%s create table sys_key error. ret:%d err:%s", __FUNCTION__, nRet, pErrMsg);
             sqlite3_free(pErrMsg);
             sqlite3_close(m_pDB);
             return -1;
         }
-        // 查询用户表是否有用户
-        std::string strSql = "SELECT count(*) FROM sys_user";
+        // 查询密钥表是否有密钥
+        std::string strSql = "SELECT count(*) FROM sys_key";
         sqlite3_stmt *pStmt = NULL;
         nRet = sqlite3_prepare(m_pDB, strSql.c_str(), -1, &pStmt, 0);
         if (nRet != SQLITE_OK)
@@ -140,20 +132,19 @@ int CDatabaseManager::ConnectDB()
             return -1;
         }
         int nRc = sqlite3_step(pStmt);
-        int nUserCount = 0;
+        int nKeyCount = 0;
         while (nRc == SQLITE_ROW)
         {
-            nUserCount = sqlite3_column_int(pStmt, 0);
+            nKeyCount = sqlite3_column_int(pStmt, 0);
             break;
         }
         sqlite3_finalize(pStmt);
-        if (nUserCount > 0)
+        if (nKeyCount > 0)
         {
             return 0;
         }
-        // 用户表没有用户，插入默认用户
-        strSql = "INSERT INTO sys_user values(NULL,'945854C08373ECE650C7FBB48C2F7552','39366C63D5FA3FA5705C24ACD970FBAF')";
-        nRet = sqlite3_exec(m_pDB, strSql.c_str(), 0, 0, &pErrMsg);
+        // 密钥表没有密钥，插入默认密钥
+        nRet = sqlite3_exec(m_pDB, SQL_CREATE_DEFAULT_SYS_KEY, 0, 0, &pErrMsg);
         if (nRet != SQLITE_OK)
         {
             printf("%s error. ret:%d err:%s.", __FUNCTION__, nRet, pErrMsg);
@@ -446,87 +437,23 @@ int CDatabaseManager::QueryNote(QueryNoteResultCallback fun, void *pUser)
     }
     return 0;
 }
-// 添加用户
-int CDatabaseManager::AddUser(const char *pUserName, const char *pPassword)
+
+// 更新密钥
+int CDatabaseManager::UpdateKey(const char *pNewKey, const char *pOldKey)
 {
     try
     {
-        if (NULL == pUserName || NULL == pPassword)
+        if (NULL == pNewKey || NULL == pOldKey)
         {
             printf("%s param error.", __FUNCTION__);
             return -1;
         }
         // 组合sql语句
-        std::string strSql = "INSERT INTO sys_user values(NULL,'";
-        strSql += pUserName;
-        strSql += "','";
-        strSql += pPassword;
-        strSql += "');";
-        char *pErrMsg = NULL;
-        // 执行sql语句
-        std::lock_guard<std::mutex> guardDBMgr(m_mutexDBMgr);
-        int nRet = sqlite3_exec(m_pDB, strSql.c_str(), 0, 0, &pErrMsg);
-        if (nRet != SQLITE_OK)
-        {
-            printf("%s error. ret:%d err:%s.", __FUNCTION__, nRet, pErrMsg);
-            sqlite3_free(pErrMsg);
-            return -1;
-        }
-    }
-    catch (...)
-    {
-        printf("%s exception.", __FUNCTION__);
-        return -1;
-    }
-    return 0;
-}
-// 删除用户
-int CDatabaseManager::DeleteUser(int nUserID)
-{
-    try
-    {
-        if (nUserID <= 0)
-        {
-            return -1;
-        }
-        // 组合sql语句
-        std::string strSql = "DELETE FROM sys_user WHERE id=";
-        strSql += std::to_string(nUserID);
-        char *pErrMsg = NULL;
-        // 执行sql语句
-        std::lock_guard<std::mutex> guardDBMgr(m_mutexDBMgr);
-        int nRet = sqlite3_exec(m_pDB, strSql.c_str(), 0, 0, &pErrMsg);
-        if (nRet != SQLITE_OK)
-        {
-            printf("%s error. ret:%d err:%s.", __FUNCTION__, nRet, pErrMsg);
-            sqlite3_free(pErrMsg);
-            return -1;
-        }
-    }
-    catch (...)
-    {
-        printf("%s exception.", __FUNCTION__);
-        return -1;
-    }
-    return 0;
-}
-// 更新用户
-int CDatabaseManager::UpdateUser(int nUserID, const char *pUserName, const char *pPassword)
-{
-    try
-    {
-        if (NULL == pUserName || NULL == pPassword || nUserID <= 0)
-        {
-            printf("%s param error.", __FUNCTION__);
-            return -1;
-        }
-        // 组合sql语句
-        std::string strSql = "UPDATE sys_user SET user_name ='";
-        strSql += pUserName;
-        strSql += "', user_password ='";
-        strSql += pPassword;
-        strSql += "' WHERE id=";
-        strSql += std::to_string(nUserID);
+        std::string strSql = "UPDATE sys_key SET user_key ='";
+        strSql += pNewKey;
+        strSql += "' WHERE user_key='";
+        strSql += pOldKey;
+        strSql += "';";
         char *pErrMsg = NULL;
         // 执行sql语句
         std::lock_guard<std::mutex> guardDBMgr(m_mutexDBMgr);
@@ -545,42 +472,8 @@ int CDatabaseManager::UpdateUser(int nUserID, const char *pUserName, const char 
     }
     return 0;
 }
-// 更新用户
-int CDatabaseManager::UpdateUser(const char *pUserName, const char *pPassword)
-{
-    try
-    {
-        if (NULL == pUserName || NULL == pPassword)
-        {
-            printf("%s param error.", __FUNCTION__);
-            return -1;
-        }
-        // 组合sql语句
-        std::string strSql = "UPDATE sys_user SET user_password ='";
-        strSql += pPassword;
-        strSql += "' WHERE user_name = '";
-        strSql += pUserName;
-        strSql += "'";
-        char *pErrMsg = NULL;
-        // 执行sql语句
-        std::lock_guard<std::mutex> guardDBMgr(m_mutexDBMgr);
-        int nRet = sqlite3_exec(m_pDB, strSql.c_str(), 0, 0, &pErrMsg);
-        if (nRet != SQLITE_OK)
-        {
-            printf("%s error. ret:%d err:%s", __FUNCTION__, nRet, pErrMsg);
-            sqlite3_free(pErrMsg);
-            return -1;
-        }
-    }
-    catch (...)
-    {
-        printf("%s exception.", __FUNCTION__);
-        return -1;
-    }
-    return 0;
-}
-// 查询用户
-int CDatabaseManager::QueryUser(QueryUserResultCallback fun, void *pUser)
+// 查询密钥
+int CDatabaseManager::QueryKey(QueryKeyResultCallback fun, void *pUser)
 {
     try
     {
@@ -589,7 +482,7 @@ int CDatabaseManager::QueryUser(QueryUserResultCallback fun, void *pUser)
             return -1;
         }
         // 组合sql语句
-        std::string strSql = "SELECT id,user_name,user_password FROM sys_user";
+        std::string strSql = "SELECT id,user_key FROM sys_key";
         sqlite3_stmt *pStmtNote = NULL;
         // 执行sql语句
         std::lock_guard<std::mutex> guardDBMgr(m_mutexDBMgr);
@@ -603,17 +496,14 @@ int CDatabaseManager::QueryUser(QueryUserResultCallback fun, void *pUser)
         int nRc = sqlite3_step(pStmtNote);
         int nCol = 0;
         int nId = 0;
-        std::string strUserName = "";
-        std::string strUserPassword = "";
+        std::string strUserKey = "";
         while (nRc == SQLITE_ROW)
         {
             nCol = 0;
             nId = sqlite3_column_int(pStmtNote, nCol);
             nCol++;
-            strUserName = (char*)sqlite3_column_text(pStmtNote, nCol);
-            nCol++;
-            strUserPassword = (char*)sqlite3_column_text(pStmtNote, nCol);
-            nRet = fun(nId, strUserName.c_str(), strUserPassword.c_str(), pUser);
+            strUserKey = (char*)sqlite3_column_text(pStmtNote, nCol);
+            nRet = fun(nId, strUserKey.c_str(), pUser);
             if (nRet != 0)
             {
                 break;

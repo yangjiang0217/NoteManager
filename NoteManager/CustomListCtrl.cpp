@@ -50,7 +50,7 @@ void CCustomListCtrl::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
         pDC->FillRect(rcBack, &CBrush(::GetSysColor(COLOR_WINDOW)));
     }
     // 绘制文本
-    CString strText = "";
+    CString strText = _T("");
     CRect rcItem;
     if (lpDrawItemStruct->itemAction & ODA_DRAWENTIRE)
     {
@@ -69,7 +69,7 @@ void CCustomListCtrl::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 
 void CCustomListCtrl::OnLButtonDblClk(UINT nFlags, CPoint point)
 {
-    // 选中测试
+    // 命中测试
     LVHITTESTINFO lvhti = { point };
     m_nItem = SubItemHitTest(&lvhti);
     if (m_nItem == -1)
@@ -126,7 +126,7 @@ void CCustomListCtrl::PreSubclassWindow()
 
 LRESULT CCustomListCtrl::OnEditKillFocus(WPARAM wParam, LPARAM lParam)
 {
-    CString strText = "";
+    CString strText = _T("");
     m_editItem.GetWindowText(strText);
     CString strTextOld = GetItemText(m_nItem, m_nSubItem);
     m_editItem.ShowWindow(SW_HIDE);

@@ -4,19 +4,18 @@
 #include "../CryptoApi/CryptoApi.h"
 #ifdef _WIN32
 #ifdef _DEBUG
-#pragma comment(lib,"../lib/Debug/DatabaseApi.lib")
-#pragma comment(lib,"../lib/Debug/CryptoApi.lib")
+#pragma comment(lib,"../lib/Debug/Database.lib")
+#pragma comment(lib,"../lib/Debug/Crypto.lib")
 #else
-#pragma comment(lib,"../lib/Release/DatabaseApi.lib")
-#pragma comment(lib,"../lib/Release/CryptoApi.lib")
+#pragma comment(lib,"../lib/Release/Database.lib")
+#pragma comment(lib,"../lib/Release/Crypto.lib")
 #endif
 #endif
 
 // 构造函数
 CVerifyManager::CVerifyManager()
     : m_nVerify(-1)
-    , m_szUser{ 0 }
-    , m_szPassword{ 0 }
+    , m_szKey{ 0 }
 {
 }
 // 析构函数
@@ -29,62 +28,53 @@ CVerifyManager & CVerifyManager::GetInstance()
     static CVerifyManager sInstance;
     return sInstance;
 }
-// 验证用户
-int CVerifyManager::VerifyUser(const char *pUserName, const char *pPassword)
+// 验证密钥
+int CVerifyManager::VerifyKey(const char *pKey)
 {
-    CRYPTO_EncryptString(pUserName, m_pDefaultKey, m_szUser, sizeof(m_szUser));
-    CRYPTO_EncryptString(pPassword, m_pDefaultKey, m_szPassword, sizeof(m_szPassword));
+    CRYPTO_EncryptString(pKey, pKey, m_szKey, sizeof(m_szKey));
     int nRet = DBM_Connect();
     if (nRet != 0)
     {
         return -1;
     }
-    DBM_QueryUser(QueryUserResult, this);
+    DBM_QueryKey(QueryKeyResult, this);
     DBM_Disconnect();
     return m_nVerify;
 }
-// 修改密码
-int CVerifyManager::ModifyPassword(const char *pUserName, const char *pOldPassword, const char *pPassword)
+// 更新密钥
+int CVerifyManager::UpdateKey(const char *pNewKey, const char *pOldKey)
 {
-    // 验证用户
-    CRYPTO_EncryptString(pUserName, m_pDefaultKey, m_szUser, sizeof(m_szUser));
-    CRYPTO_EncryptString(pOldPassword, m_pDefaultKey, m_szPassword, sizeof(m_szPassword));
-    int nRet = DBM_Connect();
-    if (nRet != 0)
-    {
-        return -1;
-    }
-    DBM_QueryUser(QueryUserResult, this);
+    // 验证密钥
+    CRYPTO_EncryptString(pOldKey, pOldKey, m_szKey, sizeof(m_szKey));
+    DBM_QueryKey(QueryKeyResult, this);
     // 验证失败
     if (m_nVerify != 0)
     {
-        DBM_Disconnect();
         return -1;
     }
     // 修改密码
-    CRYPTO_EncryptString(pPassword, m_pDefaultKey, m_szPassword, sizeof(m_szPassword));
-    nRet = DBM_ModifyUserPassword(m_szUser, m_szPassword);
-    DBM_Disconnect();
-    return nRet;
+    char szNewKey[128] = { 0 };
+    CRYPTO_EncryptString(pNewKey, pNewKey, szNewKey, sizeof(szNewKey));
+    return DBM_UpdateKey(szNewKey, m_szKey);
 }
-// 查询用户结果回调函数
-int CVerifyManager::QueryUserResult(int nUserID, const char *pUserName, const char *pPassword, void *pUser)
+// 查询密钥结果回调函数
+int CVerifyManager::QueryKeyResult(int nKeyID, const char *pKey, void *pUser)
 {
     if (NULL == pUser)
     {
         return 0;
     }
     CVerifyManager *pThis = static_cast<CVerifyManager*>(pUser);
-    return pThis->VerifyUserResult(pUserName, pPassword);
+    return pThis->VerifyKeyResult(pKey);
 }
-// 验证查询返回用户
-int CVerifyManager::VerifyUserResult(const char *pUserName, const char *pPassword)
+// 验证查询返回密钥
+int CVerifyManager::VerifyKeyResult(const char *pKey)
 {
-    if (NULL == pUserName || NULL == pPassword)
+    if (NULL == pKey)
     {
         return 0;
     }
-    if (strcmp(m_szUser, pUserName) == 0 && strcmp(m_szPassword, pPassword) == 0)
+    if (strcmp(m_szKey, pKey) == 0)
     {
         m_nVerify = 0;
         return -1;

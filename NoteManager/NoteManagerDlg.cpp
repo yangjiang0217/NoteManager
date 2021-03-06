@@ -8,20 +8,19 @@
 #include "NoteManagerDlg.h"
 #include "afxdialogex.h"
 #include <string>
-#include "KeyDlg.h"
-#include "ModifyPasswordDlg.h"
+#include "UpdateKeyDlg.h"
 #include "AddDlg.h"
 #include "../VerifyApi/VerifyApi.h"
 #include "../CryptoApi/CryptoApi.h"
 #include "../DatabaseApi/DatabaseApi.h"
 #ifdef _DEBUG
-#pragma comment(lib,"../lib/Debug/CryptoApi.lib")
-#pragma comment(lib,"../lib/Debug/VerifyApi.lib")
-#pragma comment(lib,"../lib/Debug/DatabaseApi.lib")
+#pragma comment(lib,"../lib/Debug/Crypto.lib")
+#pragma comment(lib,"../lib/Debug/Verify.lib")
+#pragma comment(lib,"../lib/Debug/Database.lib")
 #else
-#pragma comment(lib,"../lib/Release/CryptoApi.lib")
-#pragma comment(lib,"../lib/Release/VerifyApi.lib")
-#pragma comment(lib,"../lib/Release/DatabaseApi.lib")
+#pragma comment(lib,"../lib/Release/Crypto.lib")
+#pragma comment(lib,"../lib/Release/Verify.lib")
+#pragma comment(lib,"../lib/Release/Database.lib")
 #endif
 
 #ifdef _DEBUG
@@ -42,12 +41,12 @@ class CAboutDlg : public CDialogEx
 public:
     CAboutDlg();
 
-// 对话框数据
+    // 对话框数据
 #ifdef AFX_DESIGN_TIME
     enum { IDD = IDD_ABOUTBOX };
 #endif
 
-    protected:
+protected:
     virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 支持
 
 // 实现
@@ -77,8 +76,6 @@ END_MESSAGE_MAP()
 
 CNoteManagerDlg::CNoteManagerDlg(CWnd* pParent /*=nullptr*/)
     : CDialogEx(IDD_NOTEMANAGER_DIALOG, pParent)
-    , m_strKey("")
-    , m_strUser("")
 {
     m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
@@ -96,8 +93,8 @@ BEGIN_MESSAGE_MAP(CNoteManagerDlg, CDialogEx)
     ON_WM_SIZE()
     ON_MESSAGE(WM_LOAD＿DATA, &CNoteManagerDlg::OnLoadData)
     ON_MESSAGE(WM_CUSTOM_LIST_ITEM_CHANGE, &CNoteManagerDlg::OnCustomListItemChange)
-    ON_BN_CLICKED(IDC_BUTTON_RELOAD, &CNoteManagerDlg::OnBnClickedButtonReload)
-    ON_BN_CLICKED(IDC_BUTTON_MODIFY_PASSWORD, &CNoteManagerDlg::OnBnClickedButtonModifyPassword)
+    ON_BN_CLICKED(IDC_BUTTON_RELOAD, &CNoteManagerDlg::OnBnClickedReload)
+    ON_BN_CLICKED(IDC_BUTTON_MODIFY_PASSWORD, &CNoteManagerDlg::OnBnClickedUpdateKey)
     ON_BN_CLICKED(IDC_BUTTON_ADD, &CNoteManagerDlg::OnBnClickedButtonAdd)
     ON_BN_CLICKED(IDC_BUTTON_DELETE, &CNoteManagerDlg::OnBnClickedButtonDelete)
 END_MESSAGE_MAP()
@@ -152,15 +149,15 @@ BOOL CNoteManagerDlg::OnInitDialog()
     RECT rcList = { 0 };
     m_listNote.GetClientRect(&rcList);
     int nWidth = rcList.right - rcList.left - 25;
-    m_listNote.InsertColumn(NOTE_COLUMN_ID, "ID", LVCFMT_LEFT, int(nWidth*0.1));
-    m_listNote.InsertColumn(NOTE_COLUMN_PLATFORM, "平台", LVCFMT_LEFT, int(nWidth*0.2));
-    m_listNote.InsertColumn(NOTE_COLUMN_ACCOUNT, "账号", LVCFMT_LEFT, int(nWidth*0.35));
-    m_listNote.InsertColumn(NOTE_COLUMN_PASSWORD, "密码", LVCFMT_LEFT, int(nWidth*0.35));
+    m_listNote.InsertColumn(NOTE_COLUMN_ID, _T("ID"), LVCFMT_LEFT, int(nWidth*0.1));
+    m_listNote.InsertColumn(NOTE_COLUMN_PLATFORM, _T("平台"), LVCFMT_LEFT, int(nWidth*0.2));
+    m_listNote.InsertColumn(NOTE_COLUMN_ACCOUNT, _T("账号"), LVCFMT_LEFT, int(nWidth*0.35));
+    m_listNote.InsertColumn(NOTE_COLUMN_PASSWORD, _T("密码"), LVCFMT_LEFT, int(nWidth*0.35));
     // 连接数据库
     int nRet = DBM_Connect();
     if (nRet != 0)
     {
-        MessageBox("连接数据库失败");
+        MessageBox(_T("连接数据库失败"));
         PostMessage(WM_QUIT);
         return TRUE;
     }
@@ -178,7 +175,7 @@ void CNoteManagerDlg::OnSysCommand(UINT nID, LPARAM lParam)
     }
     else
     {
-    CDialogEx::OnSysCommand(nID, lParam);
+        CDialogEx::OnSysCommand(nID, lParam);
     }
 }
 
@@ -223,26 +220,25 @@ HCURSOR CNoteManagerDlg::OnQueryDragIcon()
 afx_msg LRESULT CNoteManagerDlg::OnLoadData(WPARAM wParam, LPARAM lParam)
 {
     DBM_QueryNote(QueryNoteResult, this);
-    if (m_strKey.IsEmpty())
-    {
-        CKeyDlg dlgKey;
-        dlgKey.DoModal();
-        m_strKey = dlgKey.GetKey();
-    }
     int nItem = 0;
     char szTmp[128] = { 0 };
+    CString strTemp = _T("");
     m_listNote.LockWindowUpdate();
     m_listNote.DeleteAllItems();
     for (auto itr : m_mapNote)
     {
-        m_listNote.InsertItem(nItem, std::to_string(itr.first).c_str());
-        m_listNote.SetItemText(nItem, NOTE_COLUMN_PLATFORM, itr.second->m_strPlatform.c_str());
+        strTemp.Format(_T("%d"), itr.first);
+        m_listNote.InsertItem(nItem, strTemp);
+        strTemp = itr.second->m_strPlatform.c_str();
+        m_listNote.SetItemText(nItem, NOTE_COLUMN_PLATFORM, strTemp);
         memset(szTmp, 0, sizeof(szTmp));
-        CRYPTO_DecryptString(itr.second->m_strAccount.c_str(), m_strKey.GetBuffer(), szTmp, sizeof(szTmp));
-        m_listNote.SetItemText(nItem, NOTE_COLUMN_ACCOUNT, szTmp);
+        CRYPTO_DecryptString(itr.second->m_strAccount.c_str(), theApp.m_strKey.c_str(), szTmp, sizeof(szTmp));
+        strTemp = szTmp;
+        m_listNote.SetItemText(nItem, NOTE_COLUMN_ACCOUNT, strTemp);
         memset(szTmp, 0, sizeof(szTmp));
-        CRYPTO_DecryptString(itr.second->m_strPassword.c_str(), m_strKey.GetBuffer(), szTmp, sizeof(szTmp));
-        m_listNote.SetItemText(nItem, NOTE_COLUMN_PASSWORD, szTmp);
+        CRYPTO_DecryptString(itr.second->m_strPassword.c_str(), theApp.m_strKey.c_str(), szTmp, sizeof(szTmp));
+        strTemp = szTmp;
+        m_listNote.SetItemText(nItem, NOTE_COLUMN_PASSWORD, strTemp);
         nItem++;
     }
     m_mapNote.clear();
@@ -318,13 +314,16 @@ void CNoteManagerDlg::OnSize(UINT nType, int cx, int cy)
 
 afx_msg LRESULT CNoteManagerDlg::OnCustomListItemChange(WPARAM wParam, LPARAM lParam)
 {
-    CString strData = m_listNote.GetItemText(wParam, lParam);
-    int nNoteID = atoi(m_listNote.GetItemText(wParam, NOTE_COLUMN_ID));
+    CStringA strData = "";
+    strData = m_listNote.GetItemText(wParam, lParam);
+    CStringA strNoteID = "";
+    strNoteID = m_listNote.GetItemText(wParam, NOTE_COLUMN_ID);
+    int nNoteID = atoi(strNoteID.GetBuffer());
     char szTmp[128] = { 0 };
     // 平台字段不加密
     if (lParam != NOTE_COLUMN_PLATFORM)
     {
-        CRYPTO_EncryptString(strData.GetBuffer(), m_strKey.GetBuffer(), szTmp, sizeof(szTmp));
+        CRYPTO_EncryptString(strData.GetBuffer(), theApp.m_strKey.c_str(), szTmp, sizeof(szTmp));
     }
     int nRet = 0;
     switch (lParam)
@@ -343,39 +342,59 @@ afx_msg LRESULT CNoteManagerDlg::OnCustomListItemChange(WPARAM wParam, LPARAM lP
     }
     if (nRet != 0)
     {
-        MessageBox("数据保存失败", "数据保存", MB_OK | MB_ICONWARNING);
+        MessageBox(_T("数据保存失败"), _T("数据保存"), MB_OK | MB_ICONWARNING);
     }
     return 0;
 }
 
 
-void CNoteManagerDlg::OnBnClickedButtonReload()
+void CNoteManagerDlg::OnBnClickedReload()
 {
     PostMessage(WM_LOAD＿DATA);
 }
 
-void CNoteManagerDlg::SetUser(CString strUser)
+void CNoteManagerDlg::OnBnClickedUpdateKey()
 {
-    m_strUser = strUser;
-}
-
-void CNoteManagerDlg::OnBnClickedButtonModifyPassword()
-{
-    CModifyPasswordDlg dlg;
+    CUpdateKeyDlg dlg;
     int nRet = dlg.DoModal();
     if (nRet != IDOK)
     {
         return;
     }
-    CString strOldPassword = dlg.GetOldPassword();
-    CString strNewPassword = dlg.GetNewPassword();
-    nRet = Verify_ModifyPassword(m_strUser.GetBuffer(), strOldPassword.GetBuffer(), strNewPassword.GetBuffer());
+    CStringA strOldKey = "";
+    strOldKey = dlg.GetOldKey();
+    CStringA strNewKey = "";
+    strNewKey = dlg.GetNewKey();
+    // 更新数据库密钥
+    nRet = Verify_UpdateKey(strNewKey.GetBuffer(), strOldKey.GetBuffer());
     if (nRet != 0)
     {
-        MessageBox("密码修改失败", "密码修改", MB_OK | MB_ICONWARNING);
+        MessageBox(_T("密钥更新失败"), _T("密钥更新"), MB_OK | MB_ICONWARNING);
         return;
     }
-    MessageBox("密码修改成功", "密码修改", MB_OK | MB_ICONINFORMATION);
+    // 更新本地密钥
+    theApp.m_strKey = strNewKey.GetBuffer();
+    // 全部重新加密保存
+    int nNoteID = -1;
+    CStringA strNoteID = "";
+    CStringA strPlatform = "";
+    CStringA strAccount = "";
+    CStringA strPassword = "";
+    char szAccount[128] = { 0 };
+    char szPassword[128] = { 0 };
+    for (int i = 0; i < m_listNote.GetItemCount(); ++i)
+    {
+        strNoteID = m_listNote.GetItemText(i, NOTE_COLUMN_ID);
+        strPlatform = m_listNote.GetItemText(i, NOTE_COLUMN_PLATFORM);
+        strAccount = m_listNote.GetItemText(i, NOTE_COLUMN_ACCOUNT);
+        strPassword = m_listNote.GetItemText(i, NOTE_COLUMN_PASSWORD);
+        nNoteID = atoi(strNoteID.GetBuffer());
+        CRYPTO_EncryptString(strAccount.GetBuffer(), theApp.m_strKey.c_str(), szAccount, sizeof(szAccount));
+        CRYPTO_EncryptString(strPassword.GetBuffer(), theApp.m_strKey.c_str(), szPassword, sizeof(szPassword));
+        // 更新便签
+        DBM_UpdateNote(nNoteID, strPlatform.GetBuffer(), szAccount, szPassword);
+    }
+    MessageBox(_T("密钥更新成功"), _T("密钥更新"), MB_OK | MB_ICONINFORMATION);
 }
 
 
@@ -398,17 +417,20 @@ void CNoteManagerDlg::OnBnClickedButtonAdd()
         return;
     }
 
-    CString strPlatform = dlgAdd.GetPlatform();
-    CString strAccount = dlgAdd.GetAccount();
-    CString strPassword = dlgAdd.GetPassword();
+    CStringA strPlatform = "";
+    strPlatform = dlgAdd.GetPlatform();
+    CStringA strAccount = "";
+    strAccount = dlgAdd.GetAccount();
+    CStringA strPassword = "";
+    strPassword = dlgAdd.GetPassword();
     char szAccount[128] = { 0 };
     char szPassword[128] = { 0 };
-    CRYPTO_EncryptString(strAccount.GetBuffer(), m_strKey.GetBuffer(), szAccount, sizeof(szAccount));
-    CRYPTO_EncryptString(strPassword.GetBuffer(), m_strKey.GetBuffer(), szPassword, sizeof(szPassword));
+    CRYPTO_EncryptString(strAccount.GetBuffer(), theApp.m_strKey.c_str(), szAccount, sizeof(szAccount));
+    CRYPTO_EncryptString(strPassword.GetBuffer(), theApp.m_strKey.c_str(), szPassword, sizeof(szPassword));
     nRet = DBM_AddNote(strPlatform.GetBuffer(), szAccount, szPassword);
     if (nRet != 0)
     {
-        MessageBox("数据保存失败", "数据保存", MB_OK | MB_ICONWARNING);
+        MessageBox(_T("数据保存失败"), _T("数据保存"), MB_OK | MB_ICONWARNING);
         return;
     }
     PostMessage(WM_LOAD＿DATA);
@@ -421,15 +443,16 @@ void CNoteManagerDlg::OnBnClickedButtonDelete()
     int nSelectItem = m_listNote.GetNextItem(-1, LVIS_SELECTED);
     if (nSelectItem == CB_ERR)
     {
-        MessageBox("请选中一条进行删除");
+        MessageBox(_T("请选中一条进行删除"));
         return;
     }
-    CString strNoteID = m_listNote.GetItemText(nSelectItem, NOTE_COLUMN_ID);
+    CStringA strNoteID = "";
+    strNoteID = m_listNote.GetItemText(nSelectItem, NOTE_COLUMN_ID);
     int nNoteID = atoi(strNoteID.GetBuffer());
     int nRet = DBM_DeleteNote(nNoteID);
     if (nRet != 0)
     {
-        MessageBox("数据删除失败", "删除保存", MB_OK | MB_ICONWARNING);
+        MessageBox(_T("数据删除失败"), _T("删除保存"), MB_OK | MB_ICONWARNING);
         return;
     }
     PostMessage(WM_LOAD＿DATA);

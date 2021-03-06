@@ -5,14 +5,14 @@
 #include "VerifyManager.h"
 
 
-// 验证用户
-VERIFYAPI_API int Verify_User(const char *pUserName, const char *pPassword)
+// 验证密钥
+VERIFY_API int VERIFY_CALL Verify_Key(const char *pKey)
 {
-    return CVerifyManager::GetInstance().VerifyUser(pUserName, pPassword);
+    return CVerifyManager::GetInstance().VerifyKey(pKey);
 }
 
-// 修改密码
-VERIFYAPI_API int Verify_ModifyPassword(const char *pUserName, const char *pOldPassword, const char *pPassword)
+// 更新密钥
+VERIFY_API int VERIFY_CALL Verify_UpdateKey(const char *pNeyKey, const char *pOldKey)
 {
-    return CVerifyManager::GetInstance().ModifyPassword(pUserName, pOldPassword, pPassword);
+    return CVerifyManager::GetInstance().UpdateKey(pNeyKey, pOldKey);
 }

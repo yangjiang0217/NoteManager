@@ -1,15 +1,14 @@
-﻿// CryptoApi.cpp : 定义 DLL 的导出函数。
-#include "pch.h"
+﻿#include "pch.h"
 #include "framework.h"
 #include "CryptoApi.h"
 #include "Crypto.h"
 
 // 加密
-CRYPTOAPI_API int CRYPTO_EncryptString(const char *pText, const char *pKey, char *pOut, unsigned int nOutLen)
+CRYPTOAPI_API int CRYPTOAPI_CALL CRYPTO_EncryptString(const char *pText, const char *pKey, char *pOut, unsigned int nOutLen)
 {
     try
     {
-        if (NULL == pText || NULL == pKey || NULL == pOut || nOutLen <= 0)
+        if (NULL == pText || NULL == pKey || NULL == pOut)
         {
             return -1;
         }
@@ -25,7 +24,7 @@ CRYPTOAPI_API int CRYPTO_EncryptString(const char *pText, const char *pKey, char
     return 0;
 }
 // 解密
-CRYPTOAPI_API int CRYPTO_DecryptString(const char *pText, const char *pKey, char *pOut, unsigned int nOutLen)
+CRYPTOAPI_API int CRYPTOAPI_CALL CRYPTO_DecryptString(const char *pText, const char *pKey, char *pOut, unsigned int nOutLen)
 {
     try
     {

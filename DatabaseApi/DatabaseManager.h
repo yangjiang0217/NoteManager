@@ -1,20 +1,20 @@
+/**
+*   @file       DatabaseManager.h
+*   @version    V1.0
+*   @date       2020-10-17
+*   @author     yangjiang
+*   @brief      数据库管理类
+*/
 #pragma once
 #include <mutex>
 #include "DatabaseApi.h"
 #include "Sqlite3/include/sqlite3.h"
 #pragma comment(lib,"Sqlite3/lib/sqlite3.lib")
-
-
+//---------------------------------------------------------
 /**
-*   获取程序库路径
-*   @param[in]  pModuleName     模块名称
-*   @param[out] pModulePath     模块路径(不包括字符'\')
-*   @param[in]  nModulePathLen  模块路径最大长度
-*   @return =0  success
-*   @return =-1 fail
+*   @class  数据库访问相关处理管理类
+*   @brief  数据库是sqllite
 */
-int Utils_GetModulePath(const char *pModuleName, char *pModulePath, int nModulePathLen);
-
 class CDatabaseManager
 {
 private:
@@ -50,16 +50,10 @@ public:
     // 查询便签
     int QueryNote(QueryNoteResultCallback fun, void *pUser);
 
-    // 添加用户
-    int AddUser(const char *pUserName, const char *pPassword);
-    // 删除用户
-    int DeleteUser(int nUserID);
     // 更新用户
-    int UpdateUser(int nUserID, const char *pUserName, const char *pPassword);
-    // 更新用户
-    int UpdateUser(const char *pUserName, const char *pPassword);
+    int UpdateKey(const char *pNewKey, const char *pOldKey);
     // 查询用户
-    int QueryUser(QueryUserResultCallback fun, void *pUser);
+    int QueryKey(QueryKeyResultCallback fun, void *pUser);
 
 private:
     std::mutex m_mutexDBMgr;        // 互斥锁

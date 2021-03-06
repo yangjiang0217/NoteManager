@@ -1,4 +1,4 @@
 LIBRARY
 EXPORTS
-    Verify_User
-    Verify_ModifyPassword
+    Verify_Key
+    Verify_UpdateKey

@@ -15,20 +15,18 @@ public:
     // 本类用单件模式实现，通过此静态函数来获取类的唯一实例
     static CVerifyManager & GetInstance();
 
-    // 验证用户
-    int VerifyUser(const char *pUserName, const char *pPassword);
-    // 修改密码
-    int ModifyPassword(const char *pUserName, const char *pOldPassword, const char *pPassword);
+    // 验证密钥
+    int VerifyKey(const char *pKey);
+    // 更新密钥
+    int UpdateKey(const char *pNewKey, const char *pOldKey);
 
 private:
-    // 查询用户结果回调函数
-    static int QueryUserResult(int nUserID, const char *pUserName, const char *pPassword, void *pUser);
-    // 验证查询返回用户
-    int VerifyUserResult(const char *pUserName, const char *pPassword);
+    // 查询密钥结果回调函数
+    static int QueryKeyResult(int nKeyID, const char *pKey, void *pUser);
+    // 验证查询返回密钥
+    int VerifyKeyResult(const char *pKey);
 
     int m_nVerify;
-    const char *m_pDefaultKey = "0123456789abcdefg";
-    char m_szUser[64];
-    char m_szPassword[128];
+    char m_szKey[128];
 };
 

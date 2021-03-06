@@ -60,15 +60,14 @@ protected:
 
 public:
     afx_msg void OnSize(UINT nType, int cx, int cy);
-    afx_msg void OnBnClickedButtonReload();
-    afx_msg void OnBnClickedButtonModifyPassword();
+    afx_msg void OnBnClickedReload();
+    afx_msg void OnBnClickedUpdateKey();
+    afx_msg void OnBnClickedButtonAdd();
+    afx_msg void OnBnClickedButtonDelete();
 
 protected:
     afx_msg LRESULT OnLoadData(WPARAM wParam, LPARAM lParam);
     afx_msg LRESULT OnCustomListItemChange(WPARAM wParam, LPARAM lParam);
-
-public:
-    void SetUser(CString strUser);
 
 private:
     // 查询便签回调函数
@@ -77,11 +76,6 @@ private:
     int AddNoteToMap(int nNoteID, const char * pPlatform, const char * pAccount, const char * pPassword);
 
 private:
-    CCustomListCtrl m_listNote;
-    MAP_NOTE_DATA m_mapNote;
-    CString m_strKey;
-    CString m_strUser;
-public:
-    afx_msg void OnBnClickedButtonAdd();
-    afx_msg void OnBnClickedButtonDelete();
+    CCustomListCtrl m_listNote; // 便签列表控件
+    MAP_NOTE_DATA m_mapNote;    // 便签列表，缓存从数据库查询到要显示到界面的数据
 };

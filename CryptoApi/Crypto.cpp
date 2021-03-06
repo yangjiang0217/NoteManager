@@ -158,7 +158,7 @@ std::string CryptoV1::DecryptString(const char* srchex, size_t srclen)
         union {
             uint8_t byte[8];
             uint64_t qword;
-        } temp, temp2;
+        } temp = {}, temp2 = {};
 
         HexToBytes(blocks[i], 16, temp.byte);
         std::memcpy(temp2.byte, temp.byte, 8);
@@ -173,7 +173,7 @@ std::string CryptoV1::DecryptString(const char* srchex, size_t srclen)
         union {
             uint8_t byte[8];
             uint64_t qword;
-        } temp = { };
+        } temp = {};
         HexToBytes(blocks[blocks_len], srclen % 16, temp.byte);
 
         accel_Blowfish_encrypt(CV, &BlowfishKey, BLOWFISH_BIG_ENDIAN);
@@ -264,7 +264,7 @@ std::string CryptoV2::EncryptStringForNCX(const void* srcBytes, size_t srclen)
         union {
             uint8_t byte[AES_BLOCK_SIZE];
             uint64_t qword[2];
-        } temp;
+        } temp = {};
 
         std::memcpy(temp.byte, blocks[i], AES_BLOCK_SIZE);
         temp.qword[0] ^= CV.qword[0];
@@ -321,7 +321,7 @@ std::string CryptoV2::DecryptStringForNCX(const char* srchex, size_t srclen)
         union {
             uint8_t byte[AES_BLOCK_SIZE];
             uint64_t qword[2];
-        } temp, NextVector;
+        } temp = {}, NextVector = {};
 
         HexToBytes(blocks[i], 2 * AES_BLOCK_SIZE, temp.byte);
         std::memcpy(NextVector.byte, temp.byte, AES_BLOCK_SIZE);
@@ -336,7 +336,7 @@ std::string CryptoV2::DecryptStringForNCX(const char* srchex, size_t srclen)
     union {
         uint8_t byte[AES_BLOCK_SIZE];
         uint64_t qword[2];
-    } temp;
+    } temp = {};
     HexToBytes(blocks[blocks_len], 2 * AES_BLOCK_SIZE, temp.byte);
     accel_AES128_decrypt(temp.byte, &AES128Key);
     temp.qword[0] ^= CV.qword[0];

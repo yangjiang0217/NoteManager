@@ -33,22 +33,19 @@
     <ClInclude Include="pch.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="LoginDlg.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="CustomEdit.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="CustomListCtrl.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="KeyDlg.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="ModifyPasswordDlg.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="AddDlg.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="VerifyDlg.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="UpdateKeyDlg.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
@@ -62,22 +59,19 @@
     <ClCompile Include="pch.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="LoginDlg.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="CustomEdit.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="CustomListCtrl.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="KeyDlg.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="ModifyPasswordDlg.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="AddDlg.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="VerifyDlg.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="UpdateKeyDlg.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

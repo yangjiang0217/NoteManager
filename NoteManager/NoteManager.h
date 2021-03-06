@@ -5,10 +5,11 @@
 #pragma once
 
 #ifndef __AFXWIN_H__
-	#error "include 'pch.h' before including this file for PCH"
+#error "include 'pch.h' before including this file for PCH"
 #endif
 
 #include "resource.h"		// 主符号
+#include <string>
 
 
 // CNoteManagerApp:
@@ -18,15 +19,18 @@
 class CNoteManagerApp : public CWinApp
 {
 public:
-	CNoteManagerApp();
+    CNoteManagerApp();
 
-// 重写
+    // 重写
 public:
-	virtual BOOL InitInstance();
+    virtual BOOL InitInstance();
 
-// 实现
+    // 实现
 
-	DECLARE_MESSAGE_MAP()
+    DECLARE_MESSAGE_MAP()
+
+public:
+    std::string m_strKey;
 };
 
 extern CNoteManagerApp theApp;
