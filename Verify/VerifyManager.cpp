@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "VerifyManager.h"
-#include "../DatabaseApi/DatabaseApi.h"
-#include "../CryptoApi/CryptoApi.h"
+#include "../Database/DatabaseApi.h"
+#include "../Crypto/CryptoApi.h"
 #ifdef _WIN32
 #ifdef _DEBUG
 #pragma comment(lib,"../lib/Debug/Database.lib")

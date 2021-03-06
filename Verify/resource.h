@@ -1,6 +1,6 @@
 //{{NO_DEPENDENCIES}}
 // Microsoft Visual C++ generated include file.
-// Used by DatabaseApi.rc
+// Used by Verify.rc
 
 // 新对象的下一组默认值
 // 

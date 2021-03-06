@@ -22,7 +22,7 @@
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{7A8EB51F-44B5-41E8-A49D-9F1DC2DFD945}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>DatabaseApi</RootNamespace>
+    <RootNamespace>Database</RootNamespace>
     <WindowsTargetPlatformVersion>10.0.19041.0</WindowsTargetPlatformVersion>
     <ProjectName>Database</ProjectName>
   </PropertyGroup>
@@ -102,7 +102,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
       <ImportLibrary>..\lib\$(Configuration)\$(TargetName).lib</ImportLibrary>
-      <ModuleDefinitionFile>DatabaseApi.def</ModuleDefinitionFile>
+      <ModuleDefinitionFile>Database.def</ModuleDefinitionFile>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -119,7 +119,7 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
-      <ModuleDefinitionFile>DatabaseApi.def</ModuleDefinitionFile>
+      <ModuleDefinitionFile>Database.def</ModuleDefinitionFile>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -141,7 +141,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
       <ImportLibrary>..\lib\$(Configuration)\$(TargetName).lib</ImportLibrary>
-      <ModuleDefinitionFile>DatabaseApi.def</ModuleDefinitionFile>
+      <ModuleDefinitionFile>Database.def</ModuleDefinitionFile>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -162,7 +162,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
-      <ModuleDefinitionFile>DatabaseApi.def</ModuleDefinitionFile>
+      <ModuleDefinitionFile>Database.def</ModuleDefinitionFile>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -184,10 +184,10 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="DatabaseApi.def" />
+    <None Include="Database.def" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="DatabaseApi.rc" />
+    <ResourceCompile Include="Database.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

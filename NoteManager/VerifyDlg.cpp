@@ -5,7 +5,7 @@
 #include "NoteManager.h"
 #include "VerifyDlg.h"
 #include "afxdialogex.h"
-#include "../VerifyApi/VerifyApi.h"
+#include "../Verify/VerifyApi.h"
 
 // CVerifyDlg 对话框
 

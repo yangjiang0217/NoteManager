@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.1259
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DatabaseApi", "DatabaseApi\DatabaseApi.vcxproj", "{7A8EB51F-44B5-41E8-A49D-9F1DC2DFD945}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Database", "Database\Database.vcxproj", "{7A8EB51F-44B5-41E8-A49D-9F1DC2DFD945}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CryptoApi", "CryptoApi\CryptoApi.vcxproj", "{1B2B8061-3917-419C-892E-986F54D7CCA3}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Crypto", "Crypto\Crypto.vcxproj", "{1B2B8061-3917-419C-892E-986F54D7CCA3}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "VerifyApi", "VerifyApi\VerifyApi.vcxproj", "{EC92B217-DA87-4A99-8106-A55A80AEDAFC}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Verify", "Verify\Verify.vcxproj", "{EC92B217-DA87-4A99-8106-A55A80AEDAFC}"
 	ProjectSection(ProjectDependencies) = postProject
 		{7A8EB51F-44B5-41E8-A49D-9F1DC2DFD945} = {7A8EB51F-44B5-41E8-A49D-9F1DC2DFD945}
 		{1B2B8061-3917-419C-892E-986F54D7CCA3} = {1B2B8061-3917-419C-892E-986F54D7CCA3}

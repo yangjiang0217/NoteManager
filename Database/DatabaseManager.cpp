@@ -86,7 +86,7 @@ int CDatabaseManager::ConnectDB()
     {
         // 取得模块路径
         char szModulePath[256] = { 0 }; // 模块路径
-        int nRet = Utils_GetModulePath("DatabaseApi.dll", szModulePath, sizeof(szModulePath));
+        int nRet = Utils_GetModulePath("Database.dll", szModulePath, sizeof(szModulePath));
         if (nRet != 0)
         {
             printf("%s Utils_GetModulePath failed", __FUNCTION__);

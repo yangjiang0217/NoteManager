@@ -102,7 +102,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
       <ImportLibrary>..\lib\$(Configuration)\$(TargetName).lib</ImportLibrary>
-      <ModuleDefinitionFile>CryptoApi.def</ModuleDefinitionFile>
+      <ModuleDefinitionFile>Crypto.def</ModuleDefinitionFile>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -119,7 +119,7 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
-      <ModuleDefinitionFile>CryptoApi.def</ModuleDefinitionFile>
+      <ModuleDefinitionFile>Crypto.def</ModuleDefinitionFile>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -141,7 +141,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
       <ImportLibrary>..\lib\$(Configuration)\$(TargetName).lib</ImportLibrary>
-      <ModuleDefinitionFile>CryptoApi.def</ModuleDefinitionFile>
+      <ModuleDefinitionFile>Crypto.def</ModuleDefinitionFile>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -162,11 +162,11 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
-      <ModuleDefinitionFile>CryptoApi.def</ModuleDefinitionFile>
+      <ModuleDefinitionFile>Crypto.def</ModuleDefinitionFile>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <None Include="CryptoApi.def" />
+    <None Include="Crypto.def" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="aes.h" />
@@ -214,7 +214,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="CryptoApi.rc" />
+    <ResourceCompile Include="Crypto.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

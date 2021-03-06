@@ -15,33 +15,16 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include="CryptoApi.def">
-      <Filter>源文件</Filter>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="framework.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="CryptoApi.h">
+    <ClInclude Include="VerifyApi.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="pch.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="aes.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="blowfish.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="sha1.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="Crypto.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="md5.h">
+    <ClInclude Include="VerifyManager.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="resource.h">
@@ -49,7 +32,7 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="CryptoApi.cpp">
+    <ClCompile Include="VerifyApi.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="dllmain.cpp">
@@ -58,27 +41,17 @@
     <ClCompile Include="pch.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="aes.c">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="aes_constant.c">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="blowfish.c">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="sha1.c">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="Crypto.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="md5.cpp">
+    <ClCompile Include="VerifyManager.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="CryptoApi.rc">
+    <None Include="Verify.def">
+      <Filter>源文件</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Verify.rc">
       <Filter>资源文件</Filter>
     </ResourceCompile>
   </ItemGroup>

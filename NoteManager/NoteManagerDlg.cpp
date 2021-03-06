@@ -10,9 +10,9 @@
 #include <string>
 #include "UpdateKeyDlg.h"
 #include "AddDlg.h"
-#include "../VerifyApi/VerifyApi.h"
-#include "../CryptoApi/CryptoApi.h"
-#include "../DatabaseApi/DatabaseApi.h"
+#include "../Verify/VerifyApi.h"
+#include "../Crypto/CryptoApi.h"
+#include "../Database/DatabaseApi.h"
 #ifdef _DEBUG
 #pragma comment(lib,"../lib/Debug/Crypto.lib")
 #pragma comment(lib,"../lib/Debug/Verify.lib")

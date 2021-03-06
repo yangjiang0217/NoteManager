@@ -15,16 +15,33 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Crypto.def">
+      <Filter>源文件</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
     <ClInclude Include="framework.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CryptoApi.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="pch.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="DatabaseApi.h">
+    <ClInclude Include="aes.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="DatabaseManager.h">
+    <ClInclude Include="blowfish.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="sha1.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="md5.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="resource.h">
@@ -32,26 +49,36 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CryptoApi.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
     <ClCompile Include="dllmain.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="pch.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="DatabaseApi.cpp">
+    <ClCompile Include="aes.c">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="DatabaseManager.cpp">
+    <ClCompile Include="aes_constant.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="blowfish.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="sha1.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Crypto.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="md5.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="DatabaseApi.def">
-      <Filter>源文件</Filter>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="DatabaseApi.rc">
+    <ResourceCompile Include="Crypto.rc">
       <Filter>资源文件</Filter>
     </ResourceCompile>
   </ItemGroup>
